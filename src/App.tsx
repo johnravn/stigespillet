@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
-import { HStack, VStack } from "@chakra-ui/react";
+import { HStack, Text, VStack } from "@chakra-ui/react";
 
 interface Tile {
   position: number;
@@ -36,12 +36,15 @@ const App: React.FC = () => {
   const board: Tile[] = Array.from({ length: 64 }, (_, i) => ({ position: i }));
 
   // Define snakes and ladders
-  board[14].ladder = 29;
-  board[47].ladder = 58;
-  board[7].ladder = 38;
-  board[10].ladder = 43;
-  board[51].snake = 32;
-  board[62].snake = 19;
+  board[10].ladder = 27;
+  board[13].ladder = 29;
+  board[24].ladder = 44;
+  board[33].ladder = 46;
+  board[55].ladder = 56;
+  board[26].snake = 8;
+  board[34].snake = 16;
+  board[50].snake = 19;
+  board[60].snake = 42;
 
   const movePlayers = () => {
     setPlayers((prevPlayers) => {
@@ -157,7 +160,18 @@ const App: React.FC = () => {
           </div>
           <button onClick={movePlayers}>KJØR</button>
         </VStack>
-        <VStack w={"70vw"}>{renderBoard()}</VStack>
+        <VStack w={"70vw"}>
+          <Text
+            fontFamily="'Poppins', sans-serif"
+            fontSize="7rem"
+            fontWeight="light"
+            textAlign="center"
+            marginTop={"-100px"}
+          >
+            Himmelstigespillet
+          </Text>
+          {renderBoard()}
+        </VStack>
       </HStack>
     </VStack>
   );
