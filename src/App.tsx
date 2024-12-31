@@ -1,6 +1,6 @@
-// Import necessary React and TypeScript modules
 import React, { useState } from "react";
 import "./App.css";
+import { HStack, VStack } from "@chakra-ui/react";
 
 interface Tile {
   position: number;
@@ -11,12 +11,26 @@ interface Tile {
 interface Player {
   team: number;
   position: number;
+  name: string;
+  image: string; // URL of the player's token image
 }
 
 const App: React.FC = () => {
-  const [players, setPlayers] = useState<Player[]>(
-    Array.from({ length: 8 }, (_, i) => ({ team: i + 1, position: 0 }))
-  );
+  const [players, setPlayers] = useState<Player[]>([
+    { team: 1, position: 0, name: "Team Bjørg", image: "assets/token1.png" },
+    { team: 2, position: 0, name: "Team Olav", image: "assets/token2.png" },
+    {
+      team: 3,
+      position: 0,
+      name: "Team Anne Mari",
+      image: "assets/token3.png",
+    },
+    { team: 4, position: 0, name: "Team Vidar", image: "assets/token4.png" },
+    { team: 5, position: 0, name: "Team Bjarte", image: "/assets/token5.png" },
+    { team: 6, position: 0, name: "Team Martin", image: "./assets/token6.png" },
+    { team: 7, position: 0, name: "Team Engebret", image: "assets/token7.png" },
+    { team: 8, position: 0, name: "Team Filip", image: "assets/token8.png" },
+  ]);
   const [moves, setMoves] = useState<number[]>(Array(8).fill(0));
 
   const board: Tile[] = Array.from({ length: 64 }, (_, i) => ({ position: i }));
@@ -49,6 +63,9 @@ const App: React.FC = () => {
         return { ...player, position: newPosition };
       });
     });
+
+    // Reset moves to 0 after updating players
+    setMoves(Array(players.length).fill(0));
   };
 
   const renderBoard = () => {
@@ -64,18 +81,28 @@ const App: React.FC = () => {
               return (
                 <div className="tile" key={col}>
                   <div className="position">{position + 1}</div>
-                  {tile.snake && (
-                    <div className="snake">🐍 {tile.snake + 1}</div>
-                  )}
+                  {tile.snake && <div className="snake">{tile.snake + 1}</div>}
                   {tile.ladder && (
-                    <div className="ladder">🪜 {tile.ladder + 1}</div>
+                    <div className="ladder">{tile.ladder + 1}</div>
                   )}
                   {playerHere.length > 0 && (
                     <div className="players">
-                      {playerHere.map((p) => (
-                        <span key={p.team} className="player">
-                          Team {p.team}
-                        </span>
+                      {playerHere.map((p, index) => (
+                        <div
+                          key={p.team}
+                          className="player"
+                          style={{
+                            position: "absolute",
+                            transform: `translate(${index * 10}px, ${0}px)`, // Offset each token
+                            zIndex: index, // Ensure tokens stack in the correct order
+                          }}
+                        >
+                          <img
+                            src={p.image}
+                            alt={p.name}
+                            className="player-token"
+                          />
+                        </div>
                       ))}
                     </div>
                   )}
@@ -89,29 +116,37 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="App">
-      <h1>Snakes and Ladders</h1>
-      <div>
-        {players.map((player, index) => (
-          <div key={index}>
-            <label>
-              Team {player.team} Move:
-              <input
-                type="number"
-                value={moves[index]}
-                onChange={(e) => {
-                  const newMoves = [...moves];
-                  newMoves[index] = parseInt(e.target.value) || 0;
-                  setMoves(newMoves);
-                }}
-              />
-            </label>
+    <VStack h={"100vh"}>
+      <HStack h={"100%"} w={"100vw"} align={"center"} justify={"space-around"}>
+        <VStack>
+          <div>
+            {players.map((player, index) => (
+              <div key={index} className="player-container">
+                <img
+                  src={player.image}
+                  alt={player.name}
+                  className="player-token-line"
+                />
+                <label className="player-line">
+                  {player.name}:
+                  <input
+                    type="number"
+                    value={moves[index]}
+                    onChange={(e) => {
+                      const newMoves = [...moves];
+                      newMoves[index] = parseInt(e.target.value) || 0;
+                      setMoves(newMoves);
+                    }}
+                  />
+                </label>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-      <button onClick={movePlayers}>Run</button>
-      {renderBoard()}
-    </div>
+          <button onClick={movePlayers}>Run</button>
+        </VStack>
+        <VStack w={"70vw"}>{renderBoard()}</VStack>
+      </HStack>
+    </VStack>
   );
 };
 

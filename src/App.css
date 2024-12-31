@@ -30,13 +30,6 @@ label {
   margin-bottom: 10px;
 }
 
-input {
-  margin-left: 10px;
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
 button {
   background-color: #007bff;
   color: white;
@@ -56,11 +49,17 @@ button:hover {
 .board {
   display: flex;
   flex-wrap: wrap;
-  width: 320px;
+  width: 800px;
   margin: 20px auto;
   border: 2px solid #ddd;
   border-radius: 8px;
   overflow: hidden;
+
+  /* Background image styles */
+  background-image: url("./assets/Board.jpg"); /* Replace with your image URL */
+  background-size: cover; /* Ensures the image covers the entire element */
+  background-position: center; /* Centers the image */
+  background-repeat: no-repeat; /* Prevents the image from tiling */
 }
 
 .row {
@@ -69,35 +68,52 @@ button:hover {
 }
 
 .tile {
-  width: 40px;
-  height: 40px;
+  width: 100px;
+  height: 100px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   border: 1px solid #ccc;
   box-sizing: border-box;
-  background-color: #f9f9f9;
+  /* background-color: #f9f9f9; */
   position: relative;
 }
 
-.tile:nth-child(2n) {
+/* .tile:nth-child(2n) {
   background-color: #e9ecef;
-}
+} */
 
 .position {
-  font-size: 0.8rem;
-  color: #666;
+  font-size: 1.2rem;
+  color: #333;
+  position: absolute;
+  top: 2px;
+  right: 2px;
 }
 
 .snake {
-  color: #d9534f;
-  font-size: 0.7rem;
+  text-align: center;
+  line-height: 40px;
+  align-items: center;
+  color: white;
+  font-size: 1.2rem;
+  background-color: #d9534f;
+  height: 40px;
+  width: 40px;
+  border-radius: 100%;
 }
 
 .ladder {
-  color: #5cb85c;
-  font-size: 0.7rem;
+  text-align: center;
+  line-height: 40px;
+  align-items: center;
+  color: white;
+  font-size: 1.2rem;
+  background-color: #5cb85c;
+  height: 40px;
+  width: 40px;
+  border-radius: 100%;
 }
 
 .players {
@@ -107,10 +123,47 @@ button:hover {
 }
 
 .player {
-  background-color: lightblue;
-  border: 1px solid #007bff;
-  border-radius: 50%;
-  font-size: 0.6rem;
-  padding: 2px 4px;
+  padding: 2px;
   margin: 1px;
+}
+
+.player-token {
+  max-width: 100%; /* Ensures the image fits within the available width */
+  max-height: 100%; /* Ensures the image fits within the available height */
+  object-fit: contain;
+  /* border-radius: 50%;
+  margin-right: 5px; */
+}
+
+.player-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.player-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  font-size: 1.4rem;
+}
+
+.player-line input {
+  margin-left: 20px;
+  padding: 5px;
+  width: 60px;
+  border: 1px solid #000;
+  border-radius: 4px;
+  background-color: #ddd;
+  color: #333;
+  text-align: right;
+  font-size: 2rem;
+}
+
+.player-token-line {
+  width: 60px;
+  height: 60px;
+  margin-right: 15px;
 }
