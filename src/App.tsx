@@ -38,6 +38,8 @@ const App: React.FC = () => {
   // Define snakes and ladders
   board[14].ladder = 29;
   board[47].ladder = 58;
+  board[7].ladder = 38;
+  board[10].ladder = 43;
   board[51].snake = 32;
   board[62].snake = 19;
 
@@ -71,46 +73,57 @@ const App: React.FC = () => {
   const renderBoard = () => {
     return (
       <div className="board">
-        {Array.from({ length: 8 }, (_, row) => (
-          <div className="row" key={row}>
-            {Array.from({ length: 8 }, (_, col) => {
-              const position = row * 8 + col;
-              const tile = board[position];
-              const playerHere = players.filter((p) => p.position === position);
+        {Array.from({ length: 8 }, (_, row) => {
+          // Reverse the row index to start from the bottom
+          const reversedRow = 7 - row;
 
-              return (
-                <div className="tile" key={col}>
-                  <div className="position">{position + 1}</div>
-                  {tile.snake && <div className="snake">{tile.snake + 1}</div>}
-                  {tile.ladder && (
-                    <div className="ladder">{tile.ladder + 1}</div>
-                  )}
-                  {playerHere.length > 0 && (
-                    <div className="players">
-                      {playerHere.map((p, index) => (
-                        <div
-                          key={p.team}
-                          className="player"
-                          style={{
-                            position: "absolute",
-                            transform: `translate(${index * 10}px, ${0}px)`, // Offset each token
-                            zIndex: index, // Ensure tokens stack in the correct order
-                          }}
-                        >
-                          <img
-                            src={p.image}
-                            alt={p.name}
-                            className="player-token"
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        ))}
+          return (
+            <div className="row" key={row}>
+              {Array.from({ length: 8 }, (_, col) => {
+                // Calculate position based on the reversed row and alternate directions
+                const isReversed = reversedRow % 2 === 1; // Odd rows are reversed
+                const position = reversedRow * 8 + (isReversed ? 7 - col : col);
+                const tile = board[position];
+                const playerHere = players.filter(
+                  (p) => p.position === position
+                );
+
+                return (
+                  <div className="tile" key={col}>
+                    <div className="position">{position + 1}</div>
+                    {tile.snake && (
+                      <div className="snake">{tile.snake + 1}</div>
+                    )}
+                    {tile.ladder && (
+                      <div className="ladder">{tile.ladder + 1}</div>
+                    )}
+                    {playerHere.length > 0 && (
+                      <div className="players">
+                        {playerHere.map((p, index) => (
+                          <div
+                            key={p.team}
+                            className="player"
+                            style={{
+                              position: "absolute",
+                              transform: `translate(${index * 18}px, ${0}px)`, // Offset each token
+                              zIndex: index, // Ensure tokens stack in the correct order
+                            }}
+                          >
+                            <img
+                              src={p.image}
+                              alt={p.name}
+                              className="player-token"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          );
+        })}
       </div>
     );
   };
@@ -119,7 +132,7 @@ const App: React.FC = () => {
     <VStack h={"100vh"}>
       <HStack h={"100%"} w={"100vw"} align={"center"} justify={"space-around"}>
         <VStack>
-          <div>
+          <div className="edit-container">
             {players.map((player, index) => (
               <div key={index} className="player-container">
                 <img
@@ -142,7 +155,7 @@ const App: React.FC = () => {
               </div>
             ))}
           </div>
-          <button onClick={movePlayers}>Run</button>
+          <button onClick={movePlayers}>KJØR</button>
         </VStack>
         <VStack w={"70vw"}>{renderBoard()}</VStack>
       </HStack>
