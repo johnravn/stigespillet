@@ -61,7 +61,7 @@ button:hover {
   flex-wrap: wrap;
   width: 960px;
   /* margin: 20px auto; */
-  /* border: 2px solid #ddd; */
+  border: 4px solid #ddd;
   /* border-radius: 8px; */
   overflow: hidden;
 
